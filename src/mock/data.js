@@ -2,17 +2,17 @@ import { nanoid } from 'nanoid';
 
 // HEAD DATA
 export const headData = {
-  title: '', // e.g: 'Name | Developer'
-  lang: '', // e.g: en, es, fr, jp
-  description: '', // e.g: Welcome to my website
+  title: 'CryptoCarlo', // e.g: 'Name | Developer'
+  lang: 'de', // e.g: en, es, fr, jp
+  description: 'Gemeinsam schaffen wir Ihren Einstieg in dei Kryptowährungen.', // e.g: Welcome to my website
 };
 
 // HERO DATA
 export const heroData = {
-  title: '',
-  name: '',
-  subtitle: '',
-  cta: '',
+  title: 'Kontrolle und Verständnis für den Einstieg in den',
+  subtitle: ' entwickeln.',
+  highlight: 'Kryptomarkt',
+  cta: 'Vereinbare noch heute einen Beratungstermin',
 };
 
 // ABOUT DATA
@@ -28,30 +28,27 @@ export const aboutData = {
 export const projectsData = [
   {
     id: nanoid(),
-    img: 'project.jpg',
-    title: '',
+    img: 'exchange.jpg',
+    title: 'Erstellung von Exchangekonten',
     info: '',
     info2: '',
     url: '',
-    repo: 'https://github.com/cobidev/react-simplefolio', // if no repo, the button will not show up
   },
   {
     id: nanoid(),
-    img: 'project.jpg',
-    title: '',
+    img: 'wallet.jpg',
+    title: 'Einrichtung von Wallets',
     info: '',
     info2: '',
     url: '',
-    repo: 'https://github.com/cobidev/react-simplefolio', // if no repo, the button will not show up
   },
   {
     id: nanoid(),
-    img: 'project.jpg',
-    title: '',
+    img: 'crypto.jpg',
+    title: 'Bitcoin und andere Kryptowährungen verstehen',
     info: '',
     info2: '',
     url: '',
-    repo: 'https://github.com/cobidev/react-simplefolio', // if no repo, the button will not show up
   },
 ];
 
