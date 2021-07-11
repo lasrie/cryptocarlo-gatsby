@@ -2,12 +2,36 @@ import React, { useContext, useEffect, useState } from 'react';
 import Fade from 'react-reveal/Fade';
 import Tilt from 'react-tilt';
 import { Container, Row, Col } from 'react-bootstrap';
-import PortfolioContext from '../../context/context';
 import Title from '../Title/Title';
-import ProjectImg from '../Image/ProjectImg';
+import Img from 'gatsby-image';
+import { useStaticQuery, graphql } from "gatsby"
+import { BLOCKS, MARKS } from "@contentful/rich-text-types"
+import { renderRichText } from "gatsby-source-contentful/rich-text"
+
 
 const Projects = () => {
-  const { projects } = useContext(PortfolioContext);
+  const data = useStaticQuery(
+    graphql`
+      query {
+        allContentfulLeistung {
+          edges {
+            node {
+              text {
+                raw
+                }
+              title
+              id
+              img {
+                fluid{
+                  ...GatsbyContentfulFluid
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+  )
 
   const [isDesktop, setIsDesktop] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -27,8 +51,30 @@ const Projects = () => {
       <Container>
         <div className="project-wrapper">
           <Title title="Leistungen" />
-          {projects.map((project) => {
-            const { title, info, info2, url, img, id } = project;
+          {data.allContentfulLeistung.edges.map(edge => {
+            const { title, id } = edge.node;
+
+            const Bold = ({ children }) => <span className="bold">{children}</span>
+            const Text = ({ children }) => <p className="align-center">{children}</p>
+
+            const options = {
+              renderMark: {
+                [MARKS.BOLD]: text => <Bold>{text}</Bold>,
+              },
+              renderNode: {
+                [BLOCKS.PARAGRAPH]: (node, children) => <Text>{children}</Text>,
+                [BLOCKS.EMBEDDED_ASSET]: node => {
+                  return (
+                    <>
+                      <h2>Embedded Asset</h2>
+                      <pre>
+                        <code>{JSON.stringify(node, null, 2)}</code>
+                      </pre>
+                    </>
+                  )
+                },
+              },
+            }
 
             return (
               <Row key={id}>
@@ -44,10 +90,8 @@ const Projects = () => {
                       <h3 className="project-wrapper__text-title">{title || 'Project Title'}</h3>
                       <div>
                         <p>
-                          {info ||
-                            'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Excepturi neque, ipsa animi maiores repellendu distinctioaperiam earum dolor voluptatum consequatur blanditiis inventore debitis fuga numquam voluptate architecto itaque molestiae.'}
+                          {renderRichText(edge.node.text, options)}
                         </p>
-                        <p className="mb-4">{info2 || ''}</p>
                       </div>
                       {/*  <a
                         target="_blank"
@@ -80,30 +124,23 @@ const Projects = () => {
                     distance="30px"
                   >
                     <div className="project-wrapper__image">
-                      <a
-                        href={url || '#!'}
-                        target="_blank"
-                        aria-label="Project Link"
-                        rel="noopener noreferrer"
+                      <Tilt
+                        options={{
+                          reverse: false,
+                          max: 8,
+                          perspective: 1000,
+                          scale: 1,
+                          speed: 300,
+                          transition: true,
+                          axis: null,
+                          reset: true,
+                          easing: 'cubic-bezier(.03,.98,.52,.99)',
+                        }}
                       >
-                        <Tilt
-                          options={{
-                            reverse: false,
-                            max: 8,
-                            perspective: 1000,
-                            scale: 1,
-                            speed: 300,
-                            transition: true,
-                            axis: null,
-                            reset: true,
-                            easing: 'cubic-bezier(.03,.98,.52,.99)',
-                          }}
-                        >
-                          <div data-tilt className="thumbnail rounded">
-                            <ProjectImg alt={title} filename={img} />
-                          </div>
-                        </Tilt>
-                      </a>
+                        <div data-tilt className="thumbnail rounded">
+                          <Img alt={title} fluid={edge.node.img.fluid} />
+                        </div>
+                      </Tilt>
                     </div>
                   </Fade>
                 </Col>
