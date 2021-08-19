@@ -20,7 +20,7 @@ const Footer = () => {
           </Link>
         </span>
         <div className="social-links">
-          {networks &&
+          {false &&
             networks.map((network) => {
               const { id, name, url } = network;
               return (
@@ -38,13 +38,15 @@ const Footer = () => {
         </div>
         <hr />
         <p className="footer__text">
-          © {new Date().getFullYear()} - Template developed by{' '}
-          <a href="https://github.com/cobidev" target="_blank" rel="noopener noreferrer">
-            Jacobo Martínez
-          </a>
+          © {new Date().getFullYear()}
         </p>
 
-        {isEnabled && <GithubButtons />}
+        <a href="impressum" className="cta-btn cta-btn--hero" >
+          Impressum | Datenschutz
+        </a>
+
+
+        {isEnabled}
       </Container>
     </footer>
   );
